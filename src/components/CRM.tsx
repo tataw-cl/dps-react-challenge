@@ -5,7 +5,7 @@ interface Users{
     firstName: string;
     lastName: string;
     birthday: string;
-    id: number;
+    id: string;
     city: string;
 }
 
@@ -42,13 +42,10 @@ export const CRM = () => {
     }, []);
 //     const [cities, setCities] = useState([]);
 //     const [selectedCity, setSelectedCity] = useState(null);
-//     interface ResponseType{
-//         data: any;
-//     }
 
     return (
     <>
-        <div>
+        {/* <div>
             {Users.map((user: Users)=>(
                 <div key={user.id}>
                     <h1>{user.firstName} {user.lastName}</h1>
@@ -56,6 +53,28 @@ export const CRM = () => {
                 </div>
             ))}
 
+        </div> */}
+        <div className="container">
+            <div className="searchBar">
+                <div className="searchBox Inputs">
+                    <label>Name</label>
+                    <input type="text" placeholder='' />
+                </div>
+                <div className="dropDown Inputs">
+                    <label>City</label>
+                    <select>
+                        <option value="">Select city</option>
+                        {Users.map((user: Users)=>(
+                            <option id={user.id} value={user.city}>{user.city}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="checkBox">
+                <label>Highest oldest per city</label>
+                    <input type="checkbox" />
+                </div>
+            </div>
+            <div className="userList"></div>
         </div>
     </>
   )
