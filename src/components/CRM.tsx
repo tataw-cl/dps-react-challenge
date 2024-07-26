@@ -58,7 +58,7 @@ export const CRM = () => {
             <div className="searchBar">
                 <div className="searchBox Inputs">
                     <label>Name</label>
-                    <input type="text" placeholder='' />
+                    <input id='search_text' type="text" placeholder='' />
                 </div>
                 <div className="dropDown Inputs">
                     <label>City</label>
@@ -70,11 +70,12 @@ export const CRM = () => {
                     </select>
                 </div>
                 <div className="checkBox">
-                <label>Highest oldest per city</label>
-                    <input type="checkbox" />
+                    <p>Highest oldest per city</p>
+                <label><input type="checkbox" /> </label>
+               
                 </div>
             </div>
-            <div className="userList"></div>
+            <div className="userList"> List of users</div>
         </div>
     </>
   )
