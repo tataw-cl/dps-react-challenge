@@ -1,5 +1,6 @@
 import dpsLogo from './assets/DPS.svg';
 import './App.css';
+import { CRM } from './components/CRM';
 
 function App() {
 	return (
@@ -10,7 +11,8 @@ function App() {
 				</a>
 			</div>
 			<div className="home-card">
-				<p>Your solution goes here 😊</p>
+				{/* <p>Your solution goes here 😊</p> */}
+				<h1><CRM /></h1>
 			</div>
 		</>
 	);
