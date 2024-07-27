@@ -49,12 +49,12 @@ select {
 	cursor: pointer;
 	transition: border-color 0.25s;
 }
-button:hover,
+/* button:hover,
 input:hover,
 textarea:hover,
 select:hover {
 	border: 1px solid #646cff;
-}
+} */
 
 select {
 	appearance: none;

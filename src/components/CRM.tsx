@@ -12,9 +12,11 @@ interface Users{
 export const CRM = () => {
     //variable for the user's datanof type Users
     const [Users, setUsers]= useState<Users[]>([]);
-    const [searchTerm, setSearchTerm]= useState('');
+    // const [searchTerm, setSearchTerm]= useState('');
     const [selectedCity, setSelectedCity]= useState('');
     const [highlightOldest, setHighlightOldest]= useState(false);
+    const [nameFilter, setNameFilter] = useState('');
+    const [debouncedNameFilter, setDebouncedNameFilter] = useState(nameFilter);
     useEffect(()=> {
         //Async function to fetch the data from the API
         const fetchData = async()=>{
@@ -34,6 +36,7 @@ export const CRM = () => {
                     id: user.id,
                     city: user.address.city
                 }));
+
                 //setting the filtered data to the User state variable
                 setUsers(filteredUserData);
                 console.log(Users);
@@ -43,31 +46,61 @@ export const CRM = () => {
         }
         fetchData();
     }, []);
-    //Filtering the users data based on the search term and the selected city
-    const filteredUsers=searchTerm ? Users.filter((user: Users)=> (user.firstName.toLowerCase().includes(searchTerm.toLowerCase() )||
-    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())) && (selectedCity? user.city === selectedCity: true)
-).slice(0,10): [];
+
+    //Debouncing the search term to avoid multiple API calls
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedNameFilter(nameFilter);
+        }, 1000);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [nameFilter]);
+
+    const filteredUsers = Users.filter((user:Users) =>( 
+        user.firstName.toLowerCase().includes(debouncedNameFilter.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(debouncedNameFilter.toLowerCase())) && (selectedCity? user.city === selectedCity: true)
+         ).slice(0,10);
+
+
+//     //Filtering the users data based on the search term and the selected city
+//     const filteredUsers=searchTerm ? Users.filter((user: Users)=> (user.firstName.toLowerCase().includes(searchTerm.toLowerCase() )||
+//     user.lastName.toLowerCase().includes(searchTerm.toLowerCase())) && (selectedCity? user.city === selectedCity: true)
+// ).slice(0,10): [];
+
+//Function to get the oldest user per city
 const getOldestUsersByCity=(users: Users[])=>{
     const oldestUsers:{[key: string]: Users}={};
+    //Iterating through the users data to get the oldest user per city
     users.forEach((user: Users) => {
-        if(!oldestUsers[user.city] || new Date(user.birthday) < new Date(oldestUsers[user.city].birthday)){
+        if(!oldestUsers[user.city] || user.birthday > oldestUsers[user.city].birthday){
             oldestUsers[user.city]=user;
         }
         
     });
  return oldestUsers;
-    // return Object.values(oldestUsers);
 }
+//calling the function to get the oldest user per city
 const oldestUsers= getOldestUsersByCity(Users);
 
     return (
     <>
         <div className="container">
             <div className="searchBar">
-                <div className="searchBox Inputs">
+                {/* <div className="searchBox Inputs">
                     <label>Name</label>
                     <input id='search_text' type="text" placeholder='' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)}/>
-                </div>
+                </div> */}
+                <div className="searchBox Inputs">
+                <label>Name Filter</label>
+                <input 
+                id='search_text'
+                    type="text" 
+                    value={nameFilter} 
+                    onChange={(e) => setNameFilter(e.target.value)} 
+                />
+            </div>
                 <div className="dropDown Inputs">
                     <label>City</label>
                     <select onChange={(e)=>setSelectedCity(e.target.value)}>
@@ -91,7 +124,8 @@ const oldestUsers= getOldestUsersByCity(Users);
                     </div>
             {filteredUsers.map((user: Users)=>(
                 <div key={user.id}>
-                    <div key={user.id} className= {`userItem ${highlightOldest && oldestUsers[user.city]?.id === user.id ? 'highlight checkBox' : 'checkBox'}`}>
+                    {/*Displaying the user data in the UI */}
+                    <div key={user.id} className= {`${highlightOldest && oldestUsers[user.city]?.id === user.id ? 'highlight checkBox' : 'checkBox'}`}>
                         <label>{user.firstName} {user.lastName}</label>
                         <label>{user.city}</label>
                         <label>{user.birthday}</label>
