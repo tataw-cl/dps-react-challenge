@@ -63,16 +63,10 @@ export const CRM = () => {
         user.lastName.toLowerCase().includes(debouncedNameFilter.toLowerCase())) && (selectedCity? user.city === selectedCity: true)
          ).slice(0,10);
 
-
-//     //Filtering the users data based on the search term and the selected city
-//     const filteredUsers=searchTerm ? Users.filter((user: Users)=> (user.firstName.toLowerCase().includes(searchTerm.toLowerCase() )||
-//     user.lastName.toLowerCase().includes(searchTerm.toLowerCase())) && (selectedCity? user.city === selectedCity: true)
-// ).slice(0,10): [];
-
 //Function to get the oldest user per city
 const getOldestUsersByCity=(users: Users[])=>{
     const oldestUsers:{[key: string]: Users}={};
-    //Iterating through the users data to get the oldest user per city
+    //Iterating through the user's data to get the oldest user per city
     users.forEach((user: Users) => {
         if(!oldestUsers[user.city] || user.birthday > oldestUsers[user.city].birthday){
             oldestUsers[user.city]=user;
@@ -84,14 +78,17 @@ const getOldestUsersByCity=(users: Users[])=>{
 //calling the function to get the oldest user per city
 const oldestUsers= getOldestUsersByCity(Users);
 
+//Function to handle user selection
+const handleUserSelect=(user: Users)=>{
+    //Setting the name filter to the selected user's name via an onclick event
+    setNameFilter(`${user.firstName} ${user.lastName}`);
+}
+
     return (
     <>
         <div className="container">
             <div className="searchBar">
-                {/* <div className="searchBox Inputs">
-                    <label>Name</label>
-                    <input id='search_text' type="text" placeholder='' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)}/>
-                </div> */}
+                {/* Input field to search the user by name */}
                 <div className="searchBox Inputs">
                 <label>Name Filter</label>
                 <input 
@@ -101,6 +98,7 @@ const oldestUsers= getOldestUsersByCity(Users);
                     onChange={(e) => setNameFilter(e.target.value)} 
                 />
             </div>
+            {/* Dropdown to select the city */}
                 <div className="dropDown Inputs">
                     <label>City</label>
                     <select onChange={(e)=>setSelectedCity(e.target.value)}>
@@ -110,22 +108,24 @@ const oldestUsers= getOldestUsersByCity(Users);
                         ))}
                     </select>
                 </div>
+                {/* Checkbox to highlight the oldest user per city if clicked */}
                 <div className="checkBox">
                     <p>Highest oldest per city</p>
                 <label><input type="checkbox" checked={highlightOldest} onChange={(e)=>setHighlightOldest(e.target.checked)}/> </label>
-              
                 </div>
             </div>
+            {/* Div to display the user data in the UI */}
             <div className="userList">
             <div className='checkBox'>
                         <label><h2>Name</h2></label>
                         <label><h2>City</h2></label>
-                        <label><h2>Birthday</h2></label>   
+                        <label><h2>Birthday</h2></label>  
                     </div>
+                    <hr /> 
             {filteredUsers.map((user: Users)=>(
-                <div key={user.id}>
-                    {/*Displaying the user data in the UI */}
-                    <div key={user.id} className= {`${highlightOldest && oldestUsers[user.city]?.id === user.id ? 'highlight checkBox' : 'checkBox'}`}>
+                <div key={user.id} onClick={()=> handleUserSelect(user)}>
+                    {/*Displaying the user data in the UI and include oldest per city if clicked */}
+                    <div key={user.id} id='highlight' className= {`${highlightOldest && oldestUsers[user.city]?.id === user.id ? 'highlight checkBox' : 'checkBox'}`}>
                         <label>{user.firstName} {user.lastName}</label>
                         <label>{user.city}</label>
                         <label>{user.birthday}</label>

@@ -99,6 +99,7 @@ input:focus,
 textarea:focus {
 	border: 1px solid #646cff;
 }
+/* styling for container of CRM implementation*/
 .container {
 	border: 5px solid #1a1a1a;
 	max-width: 100%;
@@ -108,6 +109,7 @@ flex-direction: column;
 font-size: large;
 padding: 2% 2%;
 }
+/* Search bar styling for CRM implementation*/
 .searchBar {
 	display: flex;
 	flex-direction: row;
@@ -115,28 +117,31 @@ padding: 2% 2%;
 	align-items: center;
 	width: 100%;
 }
+/* Search box styliing inside searchBar div for CRM implementation*/
 .searchBox{
 	display: flex;
 	flex-direction: column;
 	padding: 2% 2%;
 	
 }
+/* Search box input styling inside searchBox div for CRM implementation*/
 #search_text{
 	background-color: #e9e7e7;
 	border: 2px solid #171717;
 	cursor: pointer;
 }
+/* Dropdown button styling inside searchBar div for CRM implementation*/
 .dropDown {
 	display: flex;
 	flex-direction: column;
 	padding: 2% 2%;
 }
 
+/* General styling for both searchBox and  dropDown divs for CRM implementation*/
 .Inputs input, select {
 	width: 100%;
 	height: 100%;
 	padding: 12px 20px;
-	/* margin: 8px 0; */
 	display: inline-block;
 	border-radius: 10px;
 	border: 5px solid #ffffff;
@@ -144,14 +149,17 @@ padding: 2% 2%;
 	box-sizing: border-box;
 	color: #ffffff;
 }
+/* checkBox styling for CRM implementation*/
 .checkBox{
     display: flex;
 	flex-direction: row;
 	justify-content: space-between;
  justify-content: center;
     align-items: center;
+	padding: 2% 2%;
 	/* background-color: yellow; */
 }
+/* checkBox input styling to increase size of checkbox for CRM implementation*/
 .checkBox input[type='checkbox'] {
 	margin: 0% 0%;
 	height: 30px;
@@ -159,23 +167,37 @@ padding: 2% 2%;
 	border: 8px solid #1a1a1a;
 	border-radius: 10px;
 }
+/* checkBox label styling for CRM implementation*/
 label{
 	width: 100%;
 	height: 100%;
 }
-
+/* userList styling to display list of users for CRM implementation*/
 .userList{
 	border: 2px solid #1a1a1a;
+	border-radius: 20px;
 }
+/* userList oldest user styling*/
 .highlight {
     background-color: rgb(217, 255, 167); /* or bany color you prefer */
 }
-/* .checkBox div{
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-} */
+
+/* userList styling to highlight users when hover over*/
+ #highlight:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+    border: 1px solid #ccc; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s, box-shadow 0.3s; 
+}
+/* styling for horizontal line*/
+hr {
+    width: 100%; 
+    height: 5px; 
+    border: none; 
+    background-color: #1a1a1a; 
+    margin: 20px auto;
+}
 
 @media (prefers-color-scheme: light) {
 	:root {
