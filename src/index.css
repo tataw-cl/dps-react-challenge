@@ -167,6 +167,15 @@ label{
 .userList{
 	border: 2px solid #1a1a1a;
 }
+.highlight {
+    background-color: rgb(217, 255, 167); /* or bany color you prefer */
+}
+/* .checkBox div{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+} */
 
 @media (prefers-color-scheme: light) {
 	:root {

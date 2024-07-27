@@ -13,6 +13,8 @@ export const CRM = () => {
     //variable for the user's datanof type Users
     const [Users, setUsers]= useState<Users[]>([]);
     const [searchTerm, setSearchTerm]= useState('');
+    const [selectedCity, setSelectedCity]= useState('');
+    const [highlightOldest, setHighlightOldest]= useState(false);
     useEffect(()=> {
         //Async function to fetch the data from the API
         const fetchData = async()=>{
@@ -41,20 +43,25 @@ export const CRM = () => {
         }
         fetchData();
     }, []);
-    const filteredUsers=searchTerm ? Users.filter((user: Users)=> user.firstName.toLowerCase().includes(searchTerm.toLowerCase() )||
-    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())).slice(0,10): [];
+    //Filtering the users data based on the search term and the selected city
+    const filteredUsers=searchTerm ? Users.filter((user: Users)=> (user.firstName.toLowerCase().includes(searchTerm.toLowerCase() )||
+    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())) && (selectedCity? user.city === selectedCity: true)
+).slice(0,10): [];
+const getOldestUsersByCity=(users: Users[])=>{
+    const oldestUsers:{[key: string]: Users}={};
+    users.forEach((user: Users) => {
+        if(!oldestUsers[user.city] || new Date(user.birthday) < new Date(oldestUsers[user.city].birthday)){
+            oldestUsers[user.city]=user;
+        }
+        
+    });
+ return oldestUsers;
+    // return Object.values(oldestUsers);
+}
+const oldestUsers= getOldestUsersByCity(Users);
 
     return (
     <>
-        {/* <div>
-            {Users.map((user: Users)=>(
-                <div key={user.id}>
-                    <h1>{user.firstName} {user.lastName}</h1>
-                    <p>Birthday: {user.birthday}</p>
-                </div>
-            ))}
-
-        </div> */}
         <div className="container">
             <div className="searchBar">
                 <div className="searchBox Inputs">
@@ -63,7 +70,7 @@ export const CRM = () => {
                 </div>
                 <div className="dropDown Inputs">
                     <label>City</label>
-                    <select>
+                    <select onChange={(e)=>setSelectedCity(e.target.value)}>
                         <option value="">Select city</option>
                         {Users.map((user: Users)=>(
                             <option id={user.id} value={user.city}>{user.city}</option>
@@ -72,7 +79,7 @@ export const CRM = () => {
                 </div>
                 <div className="checkBox">
                     <p>Highest oldest per city</p>
-                <label><input type="checkbox" /> </label>
+                <label><input type="checkbox" checked={highlightOldest} onChange={(e)=>setHighlightOldest(e.target.checked)}/> </label>
               
                 </div>
             </div>
@@ -80,17 +87,15 @@ export const CRM = () => {
             <div className='checkBox'>
                         <label><h2>Name</h2></label>
                         <label><h2>City</h2></label>
-                        <label><h2>Birthday</h2></label>
-                       
+                        <label><h2>Birthday</h2></label>   
                     </div>
             {filteredUsers.map((user: Users)=>(
                 <div key={user.id}>
-                    <div  className='checkBox'>
-                        <label>{user.firstName} {user.lastName} </label> 
-                        <label>{user.city}</label> 
-                        <label>{user.birthday}</label> 
-                        </div>
-                    
+                    <div key={user.id} className= {`userItem ${highlightOldest && oldestUsers[user.city]?.id === user.id ? 'highlight checkBox' : 'checkBox'}`}>
+                        <label>{user.firstName} {user.lastName}</label>
+                        <label>{user.city}</label>
+                        <label>{user.birthday}</label>
+                    </div>
                 </div>
                ))}
             </div>
