@@ -12,6 +12,7 @@ interface Users{
 export const CRM = () => {
     //variable for the user's datanof type Users
     const [Users, setUsers]= useState<Users[]>([]);
+    const [searchTerm, setSearchTerm]= useState('');
     useEffect(()=> {
         //Async function to fetch the data from the API
         const fetchData = async()=>{
@@ -40,8 +41,8 @@ export const CRM = () => {
         }
         fetchData();
     }, []);
-//     const [cities, setCities] = useState([]);
-//     const [selectedCity, setSelectedCity] = useState(null);
+    const filteredUsers=searchTerm ? Users.filter((user: Users)=> user.firstName.toLowerCase().includes(searchTerm.toLowerCase() )||
+    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())).slice(0,10): [];
 
     return (
     <>
@@ -58,7 +59,7 @@ export const CRM = () => {
             <div className="searchBar">
                 <div className="searchBox Inputs">
                     <label>Name</label>
-                    <input id='search_text' type="text" placeholder='' />
+                    <input id='search_text' type="text" placeholder='' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)}/>
                 </div>
                 <div className="dropDown Inputs">
                     <label>City</label>
@@ -72,10 +73,27 @@ export const CRM = () => {
                 <div className="checkBox">
                     <p>Highest oldest per city</p>
                 <label><input type="checkbox" /> </label>
-               
+              
                 </div>
             </div>
-            <div className="userList"> List of users</div>
+            <div className="userList">
+            <div className='checkBox'>
+                        <label><h2>Name</h2></label>
+                        <label><h2>City</h2></label>
+                        <label><h2>Birthday</h2></label>
+                       
+                    </div>
+            {filteredUsers.map((user: Users)=>(
+                <div key={user.id}>
+                    <div  className='checkBox'>
+                        <label>{user.firstName} {user.lastName} </label> 
+                        <label>{user.city}</label> 
+                        <label>{user.birthday}</label> 
+                        </div>
+                    
+                </div>
+               ))}
+            </div>
         </div>
     </>
   )
